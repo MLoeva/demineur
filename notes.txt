@@ -1,1 +1,3 @@
 Pour créer les diagrammes UML : draw.io
+
+Ajouter un test pour que la case sélectionnée soit dans la grille déterminée.
