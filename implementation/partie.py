@@ -22,7 +22,8 @@ class Partie(object):
         Créer la grille de jeu, la taille varie avec le niveau de 
         """
         if self.niveau == 1:
-            self.grille_jeu = Grille(10, 10, 6)
+            #self.grille_jeu = Grille(10, 10, 6)
+            self.grille_jeu = Grille(3, 3, 3)
             self.position_mines = self.grille_jeu.calcul_position_mines() #mettre self.grille_jeu et non Grille car on fait appel à l'instance
             self.grille_numeros = self.grille_jeu.calcul_cases_numero()
             
@@ -46,6 +47,7 @@ class Partie(object):
         
         if issue == False :
             print("Oh oh.. tu viens de tout faire exploser")
+            #ajouter la grille où on ne voit que les bombes
         
     def jouer(self):
         
@@ -62,26 +64,31 @@ class Partie(object):
                     #print('RESULTAT', resultat)
                     
                 elif action == 'signaler' :
-                    self.grille_jeu.signaler(case[0],case[1])
+                    self.grille_jeu.signaler(int(case[0]),int(case[1]))
                     print(self.grille_jeu)
                     
                 elif action== 'designaler':
-                    self.grille_jeu.designaler(case[0],case[1])
+                    self.grille_jeu.designaler(int(case[0]),int(case[1]))
                     print(self.grille_jeu)
-                
-                # elif 'X' not in self.grille_jeu :
-                #     gagner_partie(True)
+                    
+                if sum(sum(self.grille_jeu.grille_visible == 'X')) == 0:
+                    self.gagner_partie(True)
+                     
                 else :
                     print('\nERREUR Veuillez choisir une action parmi : creuser, signaler, designaler\n')
         
+                num = sum(sum(self.grille_jeu.grille_visible == 'X'))
+                print('FIN ????????????????????????', num)
                 
                 
             except IndexError : 
                 print('\nERREUR Veuiller choisir une case DANS la grille\n')
                 
-        partie_en_cours.gagner_partie(False)
+        self.gagner_partie(False)
 
 if __name__=='__main__':
+    
+    
     niveau = int(input('Choisi le niveau de difficulté : (1,2 ou 3)'))
     print('Voici la grille de jeu')
     partie_en_cours = Partie(niveau)
@@ -89,16 +96,6 @@ if __name__=='__main__':
     print(partie_en_cours.grille_jeu)
     print(partie_en_cours.grille_jeu.grille_numeros)
     partie_en_cours.jouer()
-    
-    #MES TESTS
-    # partie1 = Partie(1)
-    # partie1.initialiserGrille()
-    # partie1.jouer(False)
-    
-    # resultat = partie1.grille_jeu.creuser(3,3)
-    # partie1.finPartie()
-    # print(partie1.grille_jeu)
-    
     
     
     #TESTS PROPRES
