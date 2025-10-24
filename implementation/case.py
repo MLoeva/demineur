@@ -14,14 +14,6 @@ class Case(object):
     def __str__(self):
         return("ligne   : {} \ncolonne : {}".format(self.num_ligne, self.num_colonne))
 
-class CaseVide(Case):
-    pass
-
-class CaseNumero(Case):
-    pass
-
-class CaseMine(Case):
-    pass
 
 
 if __name__=='__main__':

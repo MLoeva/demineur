@@ -12,12 +12,14 @@ class Grille(object):
     def __init__(self, nb_lignes, nb_colonnes, nb_mines):
         self.nb_lignes = nb_lignes
         self.nb_colonnes = nb_colonnes
+        self.grille_visible = np.array(['X' for _ in range(self.nb_lignes*self.nb_colonnes)]).reshape((self.nb_lignes,self.nb_colonnes))
         self.nb_mines = nb_mines
         self.position_mines = []
-        self.grille_numeros = np.zeros((self.nb_lignes, self.nb_colonnes))
+        self.grille_numeros = np.zeros((self.nb_lignes, self.nb_colonnes), dtype=int)
+
         
     def __str__(self):
-        return(str(np.array(['X' for _ in range(self.nb_lignes*self.nb_colonnes)]).reshape((self.nb_lignes,self.nb_colonnes))))
+        return str(self.grille_visible)
     
     def calcul_position_mines(self):
         """
@@ -37,7 +39,6 @@ class Grille(object):
     def calcul_cases_numero(self):
 
         for mine in self.position_mines :
-            print(mine)
             x = mine[0]
             y = mine[1]
             
@@ -71,6 +72,26 @@ class Grille(object):
         for mine in self.position_mines :
             self.grille_numeros[mine[0], mine[1]]=9
             
+    # def creuser(self, ligne, colonne):
+    #     self.grille_visible[ligne, colonne]= str(self.grille_numeros[ligne, colonne])
+    
+    def creuser(self, ligne, colonne):
+        numero_creuse = self.grille_numeros[ligne, colonne]
+        if numero_creuse == 9:
+            return True #j'ai perdu
+        else :    
+            self.grille_visible[ligne, colonne]= str(numero_creuse)
+            return False
+    
+    def signaler(self, ligne, colonne):
+        self.grille_visible[ligne, colonne]= '!'
+    
+    def designaler(self, ligne, colonne):
+        self.grille_visible[ligne, colonne]= 'X'
+    
+        
+        
+    
             
 
 
