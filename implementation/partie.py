@@ -54,31 +54,33 @@ class Partie(object):
         resultat = False
         while resultat == False:
             try :
-                action = input('Quelle action faire ? (creuser, signaler, designaler)')
+                action = input('Quelle action faire ? (creuser(C), signaler(S), designaler(D))')
                 case = input('Sur quelle case ? (Répondre au format : ligne colonne').split()
             
                 
-                if action == 'creuser': 
+                if action == 'C': 
                     resultat = self.grille_jeu.creuser(int(case[0]),int(case[1]))
                     print(self.grille_jeu)
                     #print('RESULTAT', resultat)
                     
-                elif action == 'signaler' :
+                elif action == 'S' :
                     self.grille_jeu.signaler(int(case[0]),int(case[1]))
                     print(self.grille_jeu)
                     
-                elif action== 'designaler':
+                elif action== 'D':
                     self.grille_jeu.designaler(int(case[0]),int(case[1]))
                     print(self.grille_jeu)
-                    
-                if sum(sum(self.grille_jeu.grille_visible == 'X')) == 0:
-                    self.gagner_partie(True)
-                     
+                
                 else :
                     print('\nERREUR Veuillez choisir une action parmi : creuser, signaler, designaler\n')
         
-                num = sum(sum(self.grille_jeu.grille_visible == 'X'))
-                print('FIN ????????????????????????', num)
+        
+                if sum(sum(self.grille_jeu.grille_visible == 'X')) == 0:
+                    self.gagner_partie(True)
+                     
+                
+                #num = sum(sum(self.grille_jeu.grille_visible == 'X'))
+                #print('FIN ????????????????????????', num)
                 
                 
             except IndexError : 
@@ -94,7 +96,7 @@ if __name__=='__main__':
     partie_en_cours = Partie(niveau)
     partie_en_cours.initialiserGrille()
     print(partie_en_cours.grille_jeu)
-    print(partie_en_cours.grille_jeu.grille_numeros)
+    #print(partie_en_cours.grille_jeu.grille_numeros)
     partie_en_cours.jouer()
     
     
