@@ -72,6 +72,28 @@ class Grille(object):
         for mine in self.position_mines :
             self.grille_numeros[mine[0], mine[1]]=9
             
+    # def creuser(self, ligne, colonne):
+    #     numero_creuse = self.grille_numeros[ligne-1, colonne-1]
+    #     if numero_creuse == 9:
+    #         return True #j'ai perdu
+        
+    #     if numero_creuse == 0:
+    #         self.grille_visible[ligne-1, colonne-1]= str(numero_creuse)
+    #         for i in range(-2, 1, 1):
+    #             for j in range(-2, 1, 1):
+    #                 try :
+    #                     numero=self.grille_numeros[ligne+i, colonne+j]
+    #                     if numero!=9:
+    #                         self.grille_visible[ligne+i, colonne+j]= str(numero)
+                        
+    #                 except IndexError : 
+    #                     pass                
+    #         return False
+        
+    #     else :    
+    #         self.grille_visible[ligne-1, colonne-1]= str(numero_creuse)
+    #         return False
+
 
     def creuser(self, ligne, colonne):
         numero_creuse = self.grille_numeros[ligne-1, colonne-1]
@@ -80,56 +102,40 @@ class Grille(object):
         
         if numero_creuse == 0:
             self.grille_visible[ligne-1, colonne-1]= str(numero_creuse)
-
-            for i in range(-2, 1, 1):
-                for j in range(-2, 1, 1):
-                    try :
-                        if self.grille_numeros[ligne+i, colonne+j]!=9:
-                            self.grille_visible[ligne+i, colonne+j]= str(self.grille_numeros[ligne+i, colonne+j])
-                        
-                    except IndexError : 
-                        pass                
+            self.creuse_autour(ligne-1, colonne-1)       
             return False
         
         else :    
             self.grille_visible[ligne-1, colonne-1]= str(numero_creuse)
             return False
     
-    # def creuser(self, ligne, colonne):
-    #     numero_creuse = self.grille_numeros[ligne-1, colonne-1]
-    #     if numero_creuse == 9:
-    #         return True #j'ai perdu
+    def creuse_autour(self, ligne, colonne):
+        a_creuser_autour = [[ligne, colonne]] 
         
-    #     if numero_creuse == 0:
-    #         self.grille_visible[ligne-1, colonne-1]= str(numero_creuse)
-    #         regarder_autour_de = self.creuse_autour(ligne,colonne)
-    #         print(regarder_autour_de)
-    #         for i in range(len(regarder_autour_de)):
-    #             ligne = regarder_autour_de[i][0]
-    #             colonne=regarder_autour_de[i][1]
-    #             self.creuse_autour(ligne-1,colonne-1)
-    #         return False
-        
-    #     else :    
-    #         self.grille_visible[ligne-1, colonne-1]= str(numero_creuse)
-    #         return False
+        for case_creusee in a_creuser_autour:
+            print('à creuser autour', a_creuser_autour)
+            ligne = case_creusee[0]
+            colonne = case_creusee[1]
+            
+            for i in range(-1, 2, 1):
+                for j in range(-1, 2, 1):
+                    if ligne ==0:
+                        if i==-1:
+                            i+=1
+                    if colonne==0:
+                        if j==-1:
+                            j+=1
+                    try :
+                        numero=self.grille_numeros[ligne+i, colonne+j]
+                        if numero!=9:
+                            if numero==0 and [ligne+i, colonne+j] not in a_creuser_autour and -1<ligne+i<=self.nb_lignes and -1<colonne<=self.nb_colonnes:
+                                a_creuser_autour.append([ligne+i, colonne+j])
+                            self.grille_visible[ligne+i, colonne+j]= str(numero)
+                        
+                    except IndexError : 
+                        pass
+            
     
-    # def creuse_autour(self, ligne, colonne):
-    #     regarder_autour_de =[]
-    #     for i in range(-2, 1, 1):
-    #         for j in range(-2, 1, 1):
-    #             numero = self.grille_numeros[ligne+i, colonne+j]
-    #             try :
-    #                 if numero!=9:
-    #                     if numero==0:
-    #                         regarder_autour_de.append([ligne+i,colonne+j])
-                            
-    #                     self.grille_visible[ligne+i, colonne+j]= str(numero)
-                    
-    #             except IndexError : 
-    #                 pass 
-    #     return regarder_autour_de
-        
     
     def signaler(self, ligne, colonne):
         self.grille_visible[ligne-1, colonne-1]= '!'

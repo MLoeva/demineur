@@ -28,7 +28,7 @@ class Partie(object):
             self.grille_numeros = self.grille_jeu.calcul_cases_numero()
             
         elif self.niveau == 2:
-            self.grille_jeu = Grille(15, 15, 15)
+            self.grille_jeu = Grille(15, 15, 30)
             self.position_mines = self.grille_jeu.calcul_position_mines()
             self.grille_numeros = self.grille_jeu.calcul_cases_numero()
             
@@ -96,7 +96,7 @@ if __name__=='__main__':
     partie_en_cours = Partie(niveau)
     partie_en_cours.initialiserGrille()
     print(partie_en_cours.grille_jeu)
-    #print(partie_en_cours.grille_jeu.grille_numeros)
+    print(partie_en_cours.grille_jeu.grille_numeros)
     partie_en_cours.jouer()
     
     
