@@ -113,7 +113,7 @@ class Grille(object):
         a_creuser_autour = [[ligne, colonne]] 
         
         for case_creusee in a_creuser_autour:
-            print('à creuser autour', a_creuser_autour)
+            #print('à creuser autour', a_creuser_autour)
             ligne = case_creusee[0]
             colonne = case_creusee[1]
             

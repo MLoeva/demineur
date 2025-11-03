@@ -23,7 +23,7 @@ class Partie(object):
         """
         if self.niveau == 1:
             #self.grille_jeu = Grille(10, 10, 6)
-            self.grille_jeu = Grille(3, 3, 3)
+            self.grille_jeu = Grille(5, 5, 5)
             self.position_mines = self.grille_jeu.calcul_position_mines() #mettre self.grille_jeu et non Grille car on fait appel à l'instance
             self.grille_numeros = self.grille_jeu.calcul_cases_numero()
             
@@ -44,6 +44,7 @@ class Partie(object):
     def gagner_partie(self, issue:bool):
         if issue == True :
             print("BRAVO ! Tu as gagné !")
+            #prob : on peut gagner si on signale toute la grille
         
         if issue == False :
             print("Oh oh.. tu viens de tout faire exploser")
@@ -76,7 +77,9 @@ class Partie(object):
         
         
                 if sum(sum(self.grille_jeu.grille_visible == 'X')) == 0:
-                    self.gagner_partie(True)
+                    resultat = True
+                    self.gagner_partie(resultat)
+                    
                      
                 
                 #num = sum(sum(self.grille_jeu.grille_visible == 'X'))
@@ -86,7 +89,6 @@ class Partie(object):
             except IndexError : 
                 print('\nERREUR Veuiller choisir une case DANS la grille\n')
                 
-        self.gagner_partie(False)
 
 if __name__=='__main__':
     
@@ -96,7 +98,7 @@ if __name__=='__main__':
     partie_en_cours = Partie(niveau)
     partie_en_cours.initialiserGrille()
     print(partie_en_cours.grille_jeu)
-    print(partie_en_cours.grille_jeu.grille_numeros)
+    #print(partie_en_cours.grille_jeu.grille_numeros)
     partie_en_cours.jouer()
     
     
