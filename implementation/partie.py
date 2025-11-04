@@ -41,7 +41,7 @@ class Partie(object):
             print('ERREUR Niveau indisponibles, merci de choisir entre 1, 2 ou 3 ')
             
             
-    def gagner_partie(self, issue:bool):
+    def gagner_partie(self, issue:bool): #fonction inutile
         if issue == True :
             print("BRAVO ! Tu as gagné !")
             #prob : on peut gagner si on signale toute la grille
@@ -51,17 +51,16 @@ class Partie(object):
             print("FIN DU JEU")
             #ajouter la grille où on ne voit que les bombes
             
-            
-            
-            
+
             
     def creuser_case(self, ligne, colonne):
         resultat = self.grille_jeu.creuser(ligne, colonne)
         
         if resultat is True: #j'ai perdu
             self.gagner_partie(False)
+            return True
         
-        return "continue"
+        return False
 
     def signaler_case(self, ligne, colonne):
         self.grille_jeu.signaler(ligne, colonne)

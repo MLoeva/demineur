@@ -138,10 +138,10 @@ class Grille(object):
     
     
     def signaler(self, ligne, colonne):
-        self.grille_visible[ligne-1, colonne-1]= '!'
+        self.grille_visible[ligne, colonne]= '!'
     
     def designaler(self, ligne, colonne):
-        self.grille_visible[ligne-1, colonne-1]= 'X'
+        self.grille_visible[ligne, colonne]= 'X'
     
         
         

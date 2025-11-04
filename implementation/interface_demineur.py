@@ -7,7 +7,7 @@ Created on Mon Nov  3 12:03:56 2025
 
 
 from PyQt5 import uic
-from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QPushButton, QComboBox, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QPushButton, QComboBox, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem, QMessageBox
 import sys
 from partie import Partie
 
@@ -68,7 +68,14 @@ class Fenetre(QWidget):
         
         self.setLayout(layoutGeneral)
         
-        
+    def afficher_message_fin(self, message):
+        msg_fin = QMessageBox()
+        msg_fin.setWindowTitle('FIN DE LA PARTIE')
+        msg_fin.setText(message)
+        msg_fin.setIcon(QMessageBox.Information)
+        msg_fin.setStandardButtons(QMessageBox.Ok)
+        msg_fin.exec_()
+    
         
     def action_bouton(self):
         print("Le bouton a été cliqué !")
@@ -103,12 +110,22 @@ class Fenetre(QWidget):
         action = self.action
         
         if action == 'C':
-            self.partie_en_cours.creuser_case(ligne, colonne)
+            resultat = self.partie_en_cours.creuser_case(ligne, colonne)
+            if resultat == True : #j'ai perdu
+                print('iciiiiiii')
+                message = 'Oh oh, tu viens de tout faire exploser..'
+                self.afficher_message_fin(message)
+                #self.affiche_grille_fin()
             
         elif action == 'S':
             self.partie_en_cours.signaler_case(ligne, colonne)
         elif action == 'D':
             self.partie_en_cours.designaler_case(ligne, colonne)
+        
+        if sum(sum(self.partie_en_cours.grille_jeu.grille_visible == 'X')) == 0:
+            message = "Woaw mais t'es trop une star, quel talent incroyable !!"
+            self.afficher_message_fin(message)
+                        
 
         self.afficher_grille()
 
@@ -120,7 +137,13 @@ class Fenetre(QWidget):
                 item = self.partie_en_cours.grille_jeu.grille_visible[i,j]
                 self.table.setItem(i , j , QTableWidgetItem(item))
                 
-        
+    #def affiche_grille_fin(self): #ne s'affiche pas
+        # nb_lignes = self.partie_en_cours.grille_jeu.nb_lignes
+        # nb_colonnes = self.partie_en_cours.grille_jeu.nb_colonnes
+        # for i in range(nb_lignes):
+        #     for j in range(nb_colonnes):
+        #         item = self.partie_en_cours.grille_jeu.grille_numeros[i,j]
+        #         self.table.setItem(i , j , QTableWidgetItem(item))
         
     def choix_action(self):
         # get the radio button the send the signal
@@ -138,7 +161,7 @@ class Fenetre(QWidget):
 if __name__ == "__main__":
     
     app = QApplication.instance() 
-    app.setStyle('Windows')
+    #app.setStyle('Windows')
     if not app:
         app = QApplication(sys.argv)
         
