@@ -96,17 +96,17 @@ class Grille(object):
 
 
     def creuser(self, ligne, colonne):
-        numero_creuse = self.grille_numeros[ligne-1, colonne-1]
+        numero_creuse = self.grille_numeros[ligne, colonne]
         if numero_creuse == 9:
             return True #j'ai perdu
         
         if numero_creuse == 0:
-            self.grille_visible[ligne-1, colonne-1]= str(numero_creuse)
-            self.creuse_autour(ligne-1, colonne-1)       
+            self.grille_visible[ligne, colonne]= str(numero_creuse)
+            self.creuse_autour(ligne, colonne)       
             return False
         
         else :    
-            self.grille_visible[ligne-1, colonne-1]= str(numero_creuse)
+            self.grille_visible[ligne, colonne]= str(numero_creuse)
             return False
     
     def creuse_autour(self, ligne, colonne):

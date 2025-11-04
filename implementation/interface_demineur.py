@@ -34,11 +34,14 @@ class Fenetre(QWidget):
         self.rb_signaler = QRadioButton('Signaler')
         self.rb_designaler = QRadioButton('Designaler')
         
-        self.rb_creuser.toggled.connect(self.update)
-        self.rb_signaler.toggled.connect(self.update)
-        self.rb_designaler.toggled.connect(self.update)
+        self.rb_creuser.toggled.connect(self.choix_action)
+        self.rb_signaler.toggled.connect(self.choix_action)
+        self.rb_designaler.toggled.connect(self.choix_action)
         
         self.table = QTableWidget()
+        self.table.setEditTriggers(QTableWidget.NoEditTriggers) #pour bloquer l'édition des valeurs dans l'interface
+        self.table.cellClicked.connect(self.cellule_cliquee)
+
         
         
         #layout
@@ -92,10 +95,34 @@ class Fenetre(QWidget):
         
         for i in range(nb_lignes):
             for j in range(nb_colonnes):
-                self.table.setItem(i , j , QTableWidgetItem('X'))
+                item = self.partie_en_cours.grille_jeu.grille_visible[i,j]
+                self.table.setItem(i , j , QTableWidgetItem(item))
+                
+    def cellule_cliquee(self, ligne, colonne):
+        print(f"Case cliquée : ligne {ligne}, colonne {colonne}")
+        action = self.action
+        
+        if action == 'C':
+            self.partie_en_cours.creuser_case(ligne, colonne)
+            
+        elif action == 'S':
+            self.partie_en_cours.signaler_case(ligne, colonne)
+        elif action == 'D':
+            self.partie_en_cours.designaler_case(ligne, colonne)
+
+        self.afficher_grille()
+
+    def afficher_grille(self):
+        nb_lignes = self.partie_en_cours.grille_jeu.nb_lignes
+        nb_colonnes = self.partie_en_cours.grille_jeu.nb_colonnes
+        for i in range(nb_lignes):
+            for j in range(nb_colonnes):
+                item = self.partie_en_cours.grille_jeu.grille_visible[i,j]
+                self.table.setItem(i , j , QTableWidgetItem(item))
                 
         
-    def update(self):
+        
+    def choix_action(self):
         # get the radio button the send the signal
         rb = self.sender()
 
@@ -103,14 +130,15 @@ class Fenetre(QWidget):
         if rb.isChecked():
             print('bouton selectioné :', rb.text())
             #self.result_label.setText(f'You selected {rb.text()}')
-    
+            self.action = rb.text().upper()[0]
+            print('action : ', self.action)
         
         
 
 if __name__ == "__main__":
     
     app = QApplication.instance() 
-    app.setStyle('Fusion')
+    app.setStyle('Windows')
     if not app:
         app = QApplication(sys.argv)
         

@@ -48,46 +48,67 @@ class Partie(object):
         
         if issue == False :
             print("Oh oh.. tu viens de tout faire exploser")
+            print("FIN DU JEU")
             #ajouter la grille où on ne voit que les bombes
+            
+            
+            
+            
+            
+    def creuser_case(self, ligne, colonne):
+        resultat = self.grille_jeu.creuser(ligne, colonne)
         
-    def jouer(self):
+        if resultat is True: #j'ai perdu
+            self.gagner_partie(False)
         
-        resultat = False
-        while resultat == False:
-            try :
-                action = input('Quelle action faire ? (creuser(C), signaler(S), designaler(D))')
-                case = input('Sur quelle case ? (Répondre au format : ligne colonne').split()
+        return "continue"
+
+    def signaler_case(self, ligne, colonne):
+        self.grille_jeu.signaler(ligne, colonne)
+
+
+    def designaler_case(self, ligne, colonne):
+        self.grille_jeu.designaler(ligne, colonne)
+        
+    #fonction pour jouer dans la console    
+    # def jouer(self):
+        
+    #     resultat = False
+    #     while resultat == False:
+    #         try :
+    #             action = input('Quelle action faire ? (creuser(C), signaler(S), designaler(D))')
+    #             case = input('Sur quelle case ? (Répondre au format : ligne colonne').split()
             
                 
-                if action == 'C': 
-                    resultat = self.grille_jeu.creuser(int(case[0]),int(case[1]))
-                    print(self.grille_jeu)
-                    #print('RESULTAT', resultat)
+    #             if action == 'C': 
+    #                 resultat = self.grille_jeu.creuser(int(case[0]),int(case[1]))
+    #                 print(self.grille_jeu)
+    #                 #print('RESULTAT', resultat)
                     
-                elif action == 'S' :
-                    self.grille_jeu.signaler(int(case[0]),int(case[1]))
-                    print(self.grille_jeu)
+    #             elif action == 'S' :
+    #                 self.grille_jeu.signaler(int(case[0]),int(case[1]))
+    #                 print(self.grille_jeu)
                     
-                elif action== 'D':
-                    self.grille_jeu.designaler(int(case[0]),int(case[1]))
-                    print(self.grille_jeu)
+    #             elif action== 'D':
+    #                 self.grille_jeu.designaler(int(case[0]),int(case[1]))
+    #                 print(self.grille_jeu)
                 
-                else :
-                    print('\nERREUR Veuillez choisir une action parmi : creuser, signaler, designaler\n')
+    #             else :
+    #                 print('\nERREUR Veuillez choisir une action parmi : creuser, signaler, designaler\n')
         
         
-                if sum(sum(self.grille_jeu.grille_visible == 'X')) == 0:
-                    resultat = True
-                    self.gagner_partie(resultat)
+    #             if sum(sum(self.grille_jeu.grille_visible == 'X')) == 0:
+    #                 resultat = True
+    #                 self.gagner_partie(resultat)
                     
                      
                 
-                #num = sum(sum(self.grille_jeu.grille_visible == 'X'))
-                #print('FIN ????????????????????????', num)
+    #             #num = sum(sum(self.grille_jeu.grille_visible == 'X'))
+    #             #print('FIN ????????????????????????', num)
                 
                 
-            except IndexError : 
-                print('\nERREUR Veuiller choisir une case DANS la grille\n')
+    #         except IndexError : 
+    #             print('\nERREUR Veuiller choisir une case DANS la grille\n')
                 
 
 if __name__=='__main__':
