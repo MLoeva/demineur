@@ -8,7 +8,7 @@ Created on Mon Nov  3 12:03:56 2025
 
 from PyQt5 import uic
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QPushButton, QComboBox, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem, QMessageBox, QDialog
-from PyQt5.QtGui import QColor, QPixmap
+from PyQt5.QtGui import QColor, QPixmap, QFont
 from PyQt5.QtCore import Qt
 import sys
 from partie import Partie
@@ -22,6 +22,7 @@ class Fenetre(QWidget):
         
         
         self.titre = QLabel('Jeu Démineur')
+        self.titre.setFont(QFont('Ocr a extended', 18))
         
         self.b_start = QPushButton('Afficher la solution')
         self.b_start.clicked.connect(self.affiche_solution)
