@@ -7,7 +7,9 @@ Created on Mon Nov  3 12:03:56 2025
 
 
 from PyQt5 import uic
-from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QPushButton, QComboBox, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem, QMessageBox
+from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QPushButton, QComboBox, QRadioButton, QLabel, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem, QMessageBox, QDialog
+from PyQt5.QtGui import QColor, QPixmap
+from PyQt5.QtCore import Qt
 import sys
 from partie import Partie
 
@@ -21,7 +23,7 @@ class Fenetre(QWidget):
         
         self.titre = QLabel('Jeu Démineur')
         
-        self.b_start = QPushButton('PushButton')
+        self.b_start = QPushButton('Bouton inutile')
         self.b_start.clicked.connect(self.action_bouton)
         
         self.cb_niveau = QComboBox()
@@ -68,12 +70,17 @@ class Fenetre(QWidget):
         
         self.setLayout(layoutGeneral)
         
-    def afficher_message_fin(self, message):
+    def afficher_message_fin(self, message, pth_image):
+        
         msg_fin = QMessageBox()
         msg_fin.setWindowTitle('FIN DE LA PARTIE')
         msg_fin.setText(message)
         msg_fin.setIcon(QMessageBox.Information)
-        msg_fin.setStandardButtons(QMessageBox.Ok)
+        
+        image = QPixmap(pth_image)
+        image = image.scaled(150, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
+        msg_fin.setIconPixmap(QPixmap(image))
         msg_fin.exec_()
     
         
@@ -114,7 +121,7 @@ class Fenetre(QWidget):
             if resultat == True : #j'ai perdu
                 print('iciiiiiii')
                 message = 'Oh oh, tu viens de tout faire exploser..'
-                self.afficher_message_fin(message)
+                self.afficher_message_fin(message, 'images_interface_graphique/boom.jpg')
                 #self.affiche_grille_fin()
             
         elif action == 'S':
@@ -124,7 +131,7 @@ class Fenetre(QWidget):
         
         if sum(sum(self.partie_en_cours.grille_jeu.grille_visible == 'X')) == 0:
             message = "Woaw mais t'es trop une star, quel talent incroyable !!"
-            self.afficher_message_fin(message)
+            self.afficher_message_fin(message, 'images_interface_graphique/bravo.png')
                         
 
         self.afficher_grille()
@@ -135,8 +142,28 @@ class Fenetre(QWidget):
         for i in range(nb_lignes):
             for j in range(nb_colonnes):
                 item = self.partie_en_cours.grille_jeu.grille_visible[i,j]
-                self.table.setItem(i , j , QTableWidgetItem(item))
+                cellule =  QTableWidgetItem(item)
+                self.table.setItem(i , j ,cellule)
                 
+                if item == '0' :
+                    cellule.setBackground(QColor(200, 230, 200))
+                    
+                if item == '1' :
+                    cellule.setBackground(QColor(200, 255, 200))  # vert clair
+                
+                if item == '2' :
+                    cellule.setBackground(QColor(255, 255, 0))  # jaune
+                    
+                if item == '3' :
+                    cellule.setBackground(QColor(255, 100, 0))  # orange
+                
+                if item == '4' :
+                    cellule.setBackground(QColor(255, 0, 0)) #rouge
+                
+                if item == '!':
+                    cellule.setBackground(QColor(160, 0, 160))
+                    
+                    
     #def affiche_grille_fin(self): #ne s'affiche pas
         # nb_lignes = self.partie_en_cours.grille_jeu.nb_lignes
         # nb_colonnes = self.partie_en_cours.grille_jeu.nb_colonnes

@@ -42,31 +42,44 @@ class Grille(object):
             x = mine[0]
             y = mine[1]
             
-            try :
-                self.grille_numeros[x+1, y]+=1 #à droite de la mine
-            except IndexError:
-                pass
+            for dx in [-1, 0, 1]:
+                for dy in [-1, 0, 1]:
+                    if dx==0 and dy==0:
+                        continue
+                    
+                    if 0<x+dx<self.nb_lignes and 0<y+dy<self.nb_lignes:
+                        self.grille_numeros[x+dx, y+dy]+=1
+                        
             
-            try :
-                self.grille_numeros[x-1, y]+=1 #à gauche de la mine
-            except IndexError:
-                pass
+            # try :
+            #     if y!=self.nb_colonnes-1:
+            #         self.grille_numeros[x+1, y]+=1 #à droite de la mine
+            # except IndexError:
+            #     pass
             
-            try:
-                #pour la ligne au dessus de la mine
-                self.grille_numeros[x-1, y-1]+=1 
-                self.grille_numeros[x, y-1]+=1
-                self.grille_numeros[x+1, y-1]+=1
-            except IndexError:
-                pass
+            # try :
+            #     if y!=0:
+            #         self.grille_numeros[x-1, y]+=1 #à gauche de la mine #ca marche !
+            # except IndexError:
+            #     pass
             
-            try :
-                #pour la grille au dessous de la mine
-                self.grille_numeros[x-1, y+1]+=1
-                self.grille_numeros[x, y+1]+=1
-                self.grille_numeros[x+1, y+1]+=1
-            except IndexError : 
-                pass
+            # try:
+            #     #pour la ligne au dessus de la mine
+            #     if x!=0:
+            #         self.grille_numeros[x-1, y-1]+=1 
+            #         self.grille_numeros[x, y-1]+=1
+            #         self.grille_numeros[x+1, y-1]+=1
+            # except IndexError:
+            #     pass
+            
+            # try :
+            #     #pour la ligne au dessous de la mine
+            #     if x!=self.nb_colonnes-1:
+            #         self.grille_numeros[x-1, y+1]+=1
+            #         self.grille_numeros[x, y+1]+=1
+            #         self.grille_numeros[x+1, y+1]+=1
+            # except IndexError : 
+            #     pass
         
         #pour avoir une grille propre
         for mine in self.position_mines :
