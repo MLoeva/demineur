@@ -33,7 +33,7 @@ class Partie(object):
             self.grille_numeros = self.grille_jeu.calcul_cases_numero()
             
         elif self.niveau == 3: 
-            self.grille_jeu = Grille(20, 20, 25)
+            self.grille_jeu = Grille(20, 20, 40)
             self.position_mines = self.grille_jeu.calcul_position_mines()
             self.grille_numeros = self.grille_jeu.calcul_cases_numero()
             

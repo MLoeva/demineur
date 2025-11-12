@@ -23,8 +23,8 @@ class Fenetre(QWidget):
         
         self.titre = QLabel('Jeu Démineur')
         
-        self.b_start = QPushButton('Bouton inutile')
-        self.b_start.clicked.connect(self.action_bouton)
+        self.b_start = QPushButton('Afficher la solution')
+        self.b_start.clicked.connect(self.affiche_solution)
         
         self.cb_niveau = QComboBox()
         self.cb_niveau .addItem("Niveau 1")
@@ -83,11 +83,6 @@ class Fenetre(QWidget):
         msg_fin.setIconPixmap(QPixmap(image))
         msg_fin.exec_()
     
-        
-    def action_bouton(self):
-        print("Le bouton a été cliqué !")
-        
-    
     def selectionNiveau(self, index):
         cindex = self.cb_niveau.currentIndex()
         # ctext = self.cb_niveau.itemText(index)
@@ -137,6 +132,14 @@ class Fenetre(QWidget):
         self.afficher_grille()
 
     def afficher_grille(self):
+        """
+        Fonction afficher la grille de jeu sur l'interface
+
+        Returns
+        -------
+        None.
+
+        """
         nb_lignes = self.partie_en_cours.grille_jeu.nb_lignes
         nb_colonnes = self.partie_en_cours.grille_jeu.nb_colonnes
         for i in range(nb_lignes):
@@ -157,8 +160,38 @@ class Fenetre(QWidget):
                 if item == '3' :
                     cellule.setBackground(QColor(255, 100, 0))  # orange
                 
+                if item == '4' or item == '5' or item == '6' or item == '7' or item == '8' :
+                    cellule.setBackground(QColor(255, 0, 0)) #rouge
+                
+                if item == '!':
+                    cellule.setBackground(QColor(160, 0, 160))
+    
+    def affiche_solution(self):
+        nb_lignes = self.partie_en_cours.grille_jeu.nb_lignes
+        nb_colonnes = self.partie_en_cours.grille_jeu.nb_colonnes
+        for i in range(nb_lignes):
+            for j in range(nb_colonnes):
+                item = str(self.partie_en_cours.grille_jeu.grille_numeros[i,j])
+                cellule =  QTableWidgetItem(item)
+                self.table.setItem(i , j ,cellule)
+                
+                if item == '0' :
+                    cellule.setBackground(QColor(200, 230, 200))
+                    
+                if item == '1' :
+                    cellule.setBackground(QColor(200, 255, 200))  # vert clair
+                
+                if item == '2' :
+                    cellule.setBackground(QColor(255, 255, 0))  # jaune
+                    
+                if item == '3' :
+                    cellule.setBackground(QColor(255, 100, 0))  # orange
+                
                 if item == '4' :
                     cellule.setBackground(QColor(255, 0, 0)) #rouge
+                    
+                if item == '9' :
+                    cellule.setBackground(QColor(10, 10, 10)) #rouge
                 
                 if item == '!':
                     cellule.setBackground(QColor(160, 0, 160))
