@@ -4,13 +4,26 @@ Created on Thu Oct 23 16:25:42 2025
 
 @author: loeva
 """
-#import joueur as Joueur
+
 from grille import Grille
-#import case as Case
 
 class Partie(object):
     
     def __init__(self, niveau:int):
+        """
+        Initialise une nouvelle partie de démineur.
+
+        Paramètres
+        ----------
+        niveau : int
+            Niveau de difficulté choisi par le joueur.
+            (Exemples possibles : 1 = facile, 2 = moyen, 3 = difficile)
+
+        Description
+        -----------
+        Cette classe représente une partie de démineur en cours.
+        """
+        
         self.niveau = niveau  
         self.grille_jeu = None
     
@@ -19,38 +32,40 @@ class Partie(object):
     
     def initialiserGrille(self):
         """
-        Créer la grille de jeu, la taille varie avec le niveau de 
+
+        Initialise la grille de jeu en fonction du niveau choisi.
+      
+        Description
+        -----------
+        Cette méthode crée une instance de `Grille` adaptée au niveau de 
+        difficulté sélectionné par le joueur.
+
+      
+        Après la création de la grille, la méthode :
+            - calcule les positions des mines,
+            - calcule les valeurs numériques associées à chaque case
+              (nombre de mines voisines),
+            - stocke ces informations dans les attributs de la classe `Grille`.
         """
+        
         if self.niveau == 1:
             #self.grille_jeu = Grille(10, 10, 6)
-            self.grille_jeu = Grille(5, 5, 5)
-            self.position_mines = self.grille_jeu.calcul_position_mines() #mettre self.grille_jeu et non Grille car on fait appel à l'instance
-            self.grille_numeros = self.grille_jeu.calcul_cases_numero()
+            self.grille_jeu = Grille(2, 2, 2)
+            self.grille_jeu.calcul_position_mines() #mettre self.grille_jeu et non Grille car on fait appel à l'instance
+            self.grille_jeu.calcul_cases_numero()
             
         elif self.niveau == 2:
             self.grille_jeu = Grille(15, 15, 30)
-            self.position_mines = self.grille_jeu.calcul_position_mines()
-            self.grille_numeros = self.grille_jeu.calcul_cases_numero()
+            self.grille_jeu.calcul_position_mines()
+            self.grille_jeu.calcul_cases_numero()
             
         elif self.niveau == 3: 
             self.grille_jeu = Grille(20, 20, 40)
-            self.position_mines = self.grille_jeu.calcul_position_mines()
-            self.grille_numeros = self.grille_jeu.calcul_cases_numero()
+            self.grille_jeu.calcul_position_mines()
+            self.grille_jeu.calcul_cases_numero()
             
         else :
             print('ERREUR Niveau indisponibles, merci de choisir entre 1, 2 ou 3 ')
-            
-            
-    def gagner_partie(self, issue:bool): #fonction inutile
-        if issue == True :
-            print("BRAVO ! Tu as gagné !")
-            #prob : on peut gagner si on signale toute la grille
-        
-        if issue == False :
-            print("Oh oh.. tu viens de tout faire exploser")
-            print("FIN DU JEU")
-            #ajouter la grille où on ne voit que les bombes
-            
 
             
     def creuser_case(self, ligne, colonne):
@@ -69,45 +84,59 @@ class Partie(object):
     def designaler_case(self, ligne, colonne):
         self.grille_jeu.designaler(ligne, colonne)
         
-    #fonction pour jouer dans la console    
-    # def jouer(self):
         
-    #     resultat = False
-    #     while resultat == False:
-    #         try :
-    #             action = input('Quelle action faire ? (creuser(C), signaler(S), designaler(D))')
-    #             case = input('Sur quelle case ? (Répondre au format : ligne colonne').split()
+        
+# =============================================================================    
+#     Fonctions pour jouer dans la console    
+# =============================================================================
+    def jouer(self):
+        
+        resultat = False
+        while resultat == False:
+            try :
+                action = input('Quelle action faire ? (creuser(C), signaler(S), designaler(D))')
+                case = input('Sur quelle case ? (Répondre au format : ligne colonne').split()
             
                 
-    #             if action == 'C': 
-    #                 resultat = self.grille_jeu.creuser(int(case[0]),int(case[1]))
-    #                 print(self.grille_jeu)
-    #                 #print('RESULTAT', resultat)
+                if action == 'C': 
+                    resultat = self.grille_jeu.creuser(int(case[0]),int(case[1]))
+                    print(self.grille_jeu)
+                    self.gagner_partie(resultat)
+                    #print('RESULTAT', resultat)
                     
-    #             elif action == 'S' :
-    #                 self.grille_jeu.signaler(int(case[0]),int(case[1]))
-    #                 print(self.grille_jeu)
+                elif action == 'S' :
+                    self.grille_jeu.signaler(int(case[0]),int(case[1]))
+                    print(self.grille_jeu)
                     
-    #             elif action== 'D':
-    #                 self.grille_jeu.designaler(int(case[0]),int(case[1]))
-    #                 print(self.grille_jeu)
+                elif action== 'D':
+                    self.grille_jeu.designaler(int(case[0]),int(case[1]))
+                    print(self.grille_jeu)
                 
-    #             else :
-    #                 print('\nERREUR Veuillez choisir une action parmi : creuser, signaler, designaler\n')
+                else :
+                    print('\nERREUR Veuillez choisir une action parmi : creuser, signaler, designaler\n')
         
         
-    #             if sum(sum(self.grille_jeu.grille_visible == 'X')) == 0:
-    #                 resultat = True
-    #                 self.gagner_partie(resultat)
+                if sum(sum(self.grille_jeu.grille_visible == 'X')) == 0:
+                    resultat = True
+                    self.gagner_partie(resultat)
                     
-                     
                 
-    #             #num = sum(sum(self.grille_jeu.grille_visible == 'X'))
-    #             #print('FIN ????????????????????????', num)
-                
-                
-    #         except IndexError : 
-    #             print('\nERREUR Veuiller choisir une case DANS la grille\n')
+            except IndexError : 
+                print('\nERREUR Veuiller choisir une case DANS la grille\n')
+        
+                    
+            
+    def gagner_partie(self, issue:bool): #fonction inutile
+        if issue == True :
+            print("BRAVO ! Tu as gagné !")
+            #prob : on peut gagner si on signale toute la grille
+        
+        if issue == False :
+            print("Oh oh.. tu viens de tout faire exploser")
+            print("\nFIN DU JEU\n")
+            print("\nNB : faire ctrl+c pour arrêter la partie\n")
+            
+
                 
 
 if __name__=='__main__':
