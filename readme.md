@@ -1,14 +1,14 @@
-JEU DEMINEUR PYTHON
+# JEU DEMINEUR PYTHON#
 
 
 
-Description
+## Description
 
 Jeu du démineur ! Le but est de trouver toutes les mines cachées dans la grille de jeu sans les faire exploser.
 
 
 
-Bibliothèques utilisées et versions : 
+## Bibliothèques utilisées et versions : 
 
 numpy	1.26.4
 
@@ -24,7 +24,7 @@ Utilisation de Python 3.11.4
 
 
 
-Guide d'utilisation : 
+## Guide d'utilisation : 
 
 Il existe 2 modes de jeu : 
 
@@ -57,7 +57,7 @@ Un bouton de triche permet d'afficher les positions des mines et les indices per
 
 
 
-Nomenclature utilisée pour la grille de jeu : 
+## Nomenclature utilisée pour la grille de jeu : 
 
 X : case non creusée
 
@@ -69,3 +69,5 @@ X : case non creusée
 
 ! : case signalée
 
+
+© 11/2025 Loéva MANCEAU
