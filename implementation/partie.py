@@ -69,6 +69,32 @@ class Partie(object):
 
             
     def creuser_case(self, ligne, colonne):
+        """
+        Tente de creuser une case dans la grille de jeu.
+    
+        Paramètres
+        ----------
+        ligne : int
+            Ligne de la case que le joueur souhaite creuser.
+        colonne : int
+            Colonne de la case que le joueur souhaite creuser.
+    
+        Description
+        -----------
+        Cette méthode appelle la fonction `creuser` de la grille (`Grille.creuser`) 
+        pour révéler le contenu de la case sélectionnée.
+    
+        - Si la case contient une mine (`creuser` renvoie True) :
+            - La partie est perdue
+        - Sinon :
+            - La partie continue.
+    
+        Retour
+        ------
+        bool
+            True  -> le joueur a perdu en creusant une mine.
+            False -> le joueur peut continuer à jouer.
+        """
         resultat = self.grille_jeu.creuser(ligne, colonne)
         
         if resultat is True: #j'ai perdu
@@ -78,10 +104,43 @@ class Partie(object):
         return False
 
     def signaler_case(self, ligne, colonne):
+        """
+        Signale (pose un drapeau) sur une case de la grille de jeu.
+
+        Paramètres
+        ----------
+        ligne : int
+            Ligne de la case à signaler.
+        colonne : int
+            Colonne de la case à signaler.
+    
+        Description
+        -----------
+        Cette méthode appelle la fonction `signaler` de la grille (`Grille.signaler`)
+        pour marquer la case spécifiée avec un drapeau ('!').
+
+        """
+        
         self.grille_jeu.signaler(ligne, colonne)
 
 
     def designaler_case(self, ligne, colonne):
+        """
+        Déignale (retire un drapeau) sur une case de la grille de jeu.
+
+        Paramètres
+        ----------
+        ligne : int
+            Ligne de la case à désignaler.
+        colonne : int
+            Colonne de la case à désignaler.
+    
+        Description
+        -----------
+        Cette méthode appelle la fonction `designaler` de la grille (`Grille.designaler`)
+        pour dé-marquer la case spécifiée avec un drapeau ('!').
+
+        """
         self.grille_jeu.designaler(ligne, colonne)
         
         
@@ -90,7 +149,21 @@ class Partie(object):
 #     Fonctions pour jouer dans la console    
 # =============================================================================
     def jouer(self):
-        
+        """
+        Boucle principale pour jouer une partie de démineur DANS LA CONSOLE.
+    
+        Description
+        -----------
+        Cette méthode gère l'interaction avec le joueur dans la console :
+        - Elle demande au joueur quelle action effectuer :
+            - 'C' : creuser une case,
+            - 'S' : signaler une mine,
+            - 'D' : retirer un drapeau (designaler).
+        - Elle demande ensuite sur quelle case appliquer l'action, au format "ligne colonne".
+        - Les actions sont répétées dans une boucle jusqu'à la fin de la partie 
+          (défaite ou victoire).
+        """
+      
         resultat = False
         while resultat == False:
             try :
@@ -119,7 +192,7 @@ class Partie(object):
                 if sum(sum(self.grille_jeu.grille_visible == 'X')) == 0:
                     resultat = True
                     self.gagner_partie(resultat)
-                    
+                    break
                 
             except IndexError : 
                 print('\nERREUR Veuiller choisir une case DANS la grille\n')
@@ -127,6 +200,16 @@ class Partie(object):
                     
             
     def gagner_partie(self, issue:bool): #fonction inutile
+        """
+        Affiche le message correspondant à l’issue de la partie.
+      
+        Paramètres
+        ----------
+        issue : bool
+            True  -> le joueur a gagné la partie.
+            False -> le joueur a perdu en creusant une mine.
+        """
+        
         if issue == True :
             print("BRAVO ! Tu as gagné !")
             #prob : on peut gagner si on signale toute la grille
@@ -147,11 +230,10 @@ if __name__=='__main__':
     partie_en_cours = Partie(niveau)
     partie_en_cours.initialiserGrille()
     print(partie_en_cours.grille_jeu)
-    #print(partie_en_cours.grille_jeu.grille_numeros)
     partie_en_cours.jouer()
     
     
-    #TESTS PROPRES
+    #TESTS
     
     # print('INITIALISER LA GRILLE DE JEU' )
     # print('Cas où on renseigne un niveau non disponible (>3):')
