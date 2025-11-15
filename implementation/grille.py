@@ -26,7 +26,9 @@ class Grille(object):
         -----------
         - Création de la grille visible par le joueur, remplie de 'X' (cases non révélées).
         - Initialisation de la liste des positions de mines (qui sera remplie plus tard).
-        - Création de la grille contenant les indices de présence des bombes (initialisée avec des zéros, remplie plus tard) """
+        - Création de la grille contenant les indices de présence des bombes (initialisée avec des zéros, remplie plus tard)
+        """
+        
         self.nb_lignes = nb_lignes
         self.nb_colonnes = nb_colonnes
         self.grille_visible = np.array(['X' for _ in range(self.nb_lignes*self.nb_colonnes)]).reshape((self.nb_lignes,self.nb_colonnes))
@@ -38,22 +40,11 @@ class Grille(object):
     def __str__(self):
         return str(self.grille_visible)
     
-    # def calcul_position_mines(self):
-    #     """
-    #     Calcule la position des mines dans la grille de jeu
-    #     """
-    #     for i in range(self.nb_mines):
-    #         x = rd.randint(0, self.nb_lignes-1)
-    #         y = rd.randint(0, self.nb_colonnes-1)
-            
-    #         if [x,y] not in self.position_mines :
-    #             self.position_mines.append([x,y])
-    #             self.grille_numeros[x,y]=9
           
-    #         else : 
-    #             i -=1 #ou mettre un while à la place du for
-                
     def calcul_position_mines(self):
+        """
+        Calcule aléatoirement la position des mines dans la grille.
+        """
         mines_placees = 0
 
         while mines_placees < self.nb_mines:
@@ -67,7 +58,7 @@ class Grille(object):
     
     def calcul_cases_numero(self):
         """
-        Calcule le nombre de bombes au voisinage de chaque case de la grille
+        Calcule le nombre de bombes au voisinage de chaque case de la grille.
         """
         
         for mine in self.position_mines :
@@ -79,7 +70,7 @@ class Grille(object):
                     if dx==0 and dy==0:
                         continue
                     
-                    if -1<x+dx<self.nb_lignes and -1<y+dy<self.nb_lignes:
+                    if -1<x+dx<self.nb_lignes and -1<y+dy<self.nb_colonnes:
                         self.grille_numeros[x+dx, y+dy]+=1
    
         #pour avoir une grille_numeros propre, avec seulement des numéros de 0 à 9, car si 2 bombes voisines, elle prennent la valeur 10.
@@ -90,14 +81,30 @@ class Grille(object):
     def creuser(self, ligne, colonne):
         """
         Révèle le numéro caché sous la case cliquée.
-        Autrement dit, lorsque le joueur clioque sur une case 'X' de grille_visible,
-        la valeur de la case est remplacée par la valeur contenue dans grille_numeros.
         
-        ligne : integer
-        colonne : integer
-        
-        Return : True si le joueur découvre une mine, il a perdu
-                False sinon, le jeu continue
+        Paramètres
+        ----------
+        ligne : int
+            Ligne de la case cliquée.
+        colonne : int
+            Colonne de la case cliquée.
+    
+    
+        Description
+        -----------
+        Lorsque le joueur clique sur une case de la grille visible (qui contient 'X'),
+        cette fonction :
+            - lit la valeur réelle correspondante dans `grille_numeros`,
+            - met à jour `grille_visible` pour afficher cette valeur,
+            - déclenche éventuellement le creusement automatique des cases voisines
+              si cette valeur est un 0,
+            - détecte si le joueur a cliqué sur une mine.
+    
+        Retour
+        ------
+        bool
+            True  -> le joueur a cliqué sur une mine (valeur 9) et perd.
+            False -> la case est révélée, et le jeu continue.
         """
         numero_creuse = self.grille_numeros[ligne, colonne]
         if numero_creuse == 9:
@@ -115,15 +122,14 @@ class Grille(object):
     def creuse_autour(self, ligne, colonne):
         """
 
-        Parameters
-        ----------
-        ligne : integer
-        colonne : integer
-
-
-        Returns
-        -------
-        None.
+         Révèle automatiquement les cases autour d’une case valant 0.
+        
+            Paramètres
+            ----------
+            ligne : int
+                Ligne de la case révélée initialement.
+            colonne : int
+                Colonne de la case révélée initialement.
 
         """
         a_creuser_autour = [[ligne, colonne]] 
@@ -154,9 +160,31 @@ class Grille(object):
     
     
     def signaler(self, ligne, colonne):
+        """
+        Marque une case comme suspectée d'être une mine par un '!'.
+
+        Paramètres
+        ----------
+        ligne : int
+            Ligne de la case que le joueur souhaite signaler.
+        colonne : int
+            Colonne de la case que le joueur souhaite signaler.
+        """
+        
         self.grille_visible[ligne, colonne]= '!'
     
     def designaler(self, ligne, colonne):
+        """
+        Dé-marque, désignalise une case qui a été marquée par un '!'
+
+        Paramètres
+        ----------
+        ligne : int
+            Ligne de la case que le joueur souhaite désignaler.
+        colonne : int
+            Colonne de la case que le joueur souhaite désignaler.
+        """
+        
         self.grille_visible[ligne, colonne]= 'X'
     
         
