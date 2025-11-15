@@ -50,7 +50,7 @@ class Partie(object):
         
         if self.niveau == 1:
             #self.grille_jeu = Grille(10, 10, 6)
-            self.grille_jeu = Grille(2, 2, 2)
+            self.grille_jeu = Grille(5, 5, 5)
             self.grille_jeu.calcul_position_mines() #mettre self.grille_jeu et non Grille car on fait appel à l'instance
             self.grille_jeu.calcul_cases_numero()
             
